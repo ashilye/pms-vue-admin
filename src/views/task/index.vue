@@ -1,79 +1,70 @@
 <template>
   <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
-      <el-table-column align="center" label="ID" width="95">
-        <template slot-scope="scope">
-          {{ scope.$index }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
-      </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
-        <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
+    <h3>选择操作应用</h3>
+    <div class="box-item">
+      <el-radio v-model="radio" label="1">抖音</el-radio>
+      <el-radio v-model="radio" label="2">快手</el-radio>
+    </div>
+    <h3>选择任务类型</h3>
+    <div class="box-item">
+      <el-button type="primary" icon="el-icon-plus" @click.native.prevent="handleType"></el-button>
+    </div>
+    <h3>选择设备</h3>
+    <div class="box-item">
+      <el-button type="primary" icon="el-icon-plus" @click.native.prevent="handleDevices"></el-button>
+    </div>
+
+    <div class="box-submit">
+      <el-button type="primary" @click.native.prevent="handleSubmit">立即发布</el-button>
+    </div>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
 
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
-  },
+
   data() {
     return {
-      list: null,
-      listLoading: true
+      listLoading: true,
+      radio: '1'
     }
   },
   created() {
     this.fetchData()
   },
   methods: {
+    handleType() {
+      this.$message('选择分类');
+    },
+    handleDevices() {
+      this.$message('选择设备');
+    },
+    handleSubmit() {
+      this.$message('提交');
+    },
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
-        this.listLoading = false
-      })
+
+
+
+      this.listLoading = false
+
     }
   }
 }
 </script>
+<style scoped>
+h3 {
+  color: gray;
+  margin-top: 30px;
+}
+
+.box-item {
+  margin: 0px 30px 0px 30px;
+}
+
+.box-submit {
+  margin-top: 50px;
+}
+</style>
